@@ -1,0 +1,4 @@
+voiceType: "" # "male" or "female"
+state: "" # choose state of  (e.g. "newyork")
+temperatureUnit: "" # "ceclius" or "fahrenheit"
+energyThreshold: 300 # do not touch unless you know what you are doing
