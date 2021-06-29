@@ -4,8 +4,6 @@ An easy to use, friendly voice assistant written in Python.
 ## Required Libraries
 `pip install envyaml`
 
-`pip install SpeechRecognition`
-
 `pip install gTTS`
 
 `pip install datetime`
