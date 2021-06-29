@@ -6,11 +6,14 @@ An easy to use, friendly voice assistant written in Python.
 
 `pip install gTTS`
 
+
+`pip install playsound`
+
+`pip install SpeechRecognition`
+
 `pip install datetime`
 
 `pip install requests`
-
-`pip install playsound`
 
 ## Credits
 [Christian Madlansacay](https://solo.to/christianmadlansacay) (Creator)
