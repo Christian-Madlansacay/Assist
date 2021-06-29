@@ -1,40 +1,24 @@
+import os
 from envyaml import EnvYAML
 import speech_recognition as sr
-import pyttsx3
+from gtts import gTTS
+import playsound
 import datetime as date
 import requests
 
 config = EnvYAML("config.yml")
 
-errorCount = 0
-
-voiceType = config["voiceType"]
-if voiceType == "male":
-    voiceType = 0
-elif voiceType == "female":
-    voiceType = 1
-else:
-    print("Error: Please set the \"voiceType:\" in \"config.yml\"")
-    voiceType = 1
-    errorCount = errorCount + 1
-
 state = config["state"]
 if state == "":
     print("Error: Please set the \"state:\" in \"config.yml\"")
     state = "newyork"
-    errorCount = errorCount + 1
 
 energyThreshold = config["energyThreshold"]
 if energyThreshold == "":
     print("Error: Please set the \"energyThreshold:\" in \"config.yml\"")
     energyThreshold = 300
-    errorCount = errorCount + 1
 
 listener = sr.Recognizer()
-
-ttsEngine = pyttsx3.init()
-ttsVoices = ttsEngine.getProperty("voices")
-ttsEngine.setProperty("voice", ttsVoices[voiceType].id)
 
 now = date.datetime.now()
 date = now.strftime("%A, %B %d")
@@ -51,7 +35,6 @@ else:
     print("Error: Please set the \"temperatureUnit:\" in \"config.yml\"")
     temperatureUnit = "F"
     temperatureUnitText = "fahrenheit"
-    errorCount = errorCount + 1
 
 weatherRequest = requests.get("http://wttr.in/" + state +"?format=j1") 
 weatherData = weatherRequest.json()
@@ -61,8 +44,11 @@ humidity = weatherData["weather"][0]["hourly"][0]["humidity"]
 weatherDesc = weatherData["weather"][0]["hourly"][0]["weatherDesc"][0]["value"]
 
 def tts(text):
-    ttsEngine.say(text)
-    ttsEngine.runAndWait()
+    tts = gTTS(text=text, lang="en")
+    ttsFile = "tts.mp3"
+    tts.save(ttsFile)
+    playsound.playsound(ttsFile)
+    os.remove("tts.mp3")
 
 def getVoiceInput():
     with sr.Microphone() as source:
