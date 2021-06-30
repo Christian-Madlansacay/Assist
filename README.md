@@ -2,13 +2,16 @@
 An easy to use, friendly voice assistant written in Python.
 
 ## Required Libraries
-`pip install envyaml`
 
-`pip install gTTS`
+`pip install gtts`
 
 `pip install playsound`
 
-`pip install SpeechRecognition`
+`pip install speechrecognition`
+
+`pip install pyaudio`
+
+`pip install envyaml`
 
 `pip install datetime`
 
