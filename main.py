@@ -21,8 +21,8 @@ if energyThreshold == "":
 listener = sr.Recognizer()
 
 now = date.datetime.now()
-date = now.strftime("%A, %B %d")
-time = now.strftime("%I:%M %p")
+dateNow = now.strftime("%A, %B %d")
+timeNow = now.strftime("%I:%M %p")
 
 temperatureUnit = config["temperatureUnit"]
 if temperatureUnit == "fahrenheit":
@@ -76,11 +76,11 @@ def runAssist():
         tts("how can i help")
         voiceInput = getVoiceInput()
         if "time" in voiceInput:
-            print("Time: " + time)
-            tts("the current time is " + time)
+            print("Time: " + timeNow)
+            tts("the current time is " + timeNow)
         elif "date" in voiceInput:
-            print("Date: " + date)
-            tts("the current date is " + date)
+            print("Date: " + dateNow)
+            tts("the current date is " + dateNow)
         elif "weather" in voiceInput:
             print("Weather Description: " + weatherDesc)
             print("Temperature: " + temp + "°" + temperatureUnit)
