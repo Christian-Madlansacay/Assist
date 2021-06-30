@@ -4,9 +4,23 @@ import speech_recognition as sr
 from gtts import gTTS
 import playsound
 import datetime as date
+from time import sleep
 import requests
+from gpiozero import LED
 
 config = EnvYAML("config.yml")
+
+raspberryPiEnabled = config["raspberryPi"]["enabled"]
+if raspberryPiEnabled == True:
+    errorLEDPin = config["raspberryPi"]["errorLEDPin"]
+    recognizingLEDPin = config["raspberryPi"]["recognizingLEDPin"]
+    voiceLEDPin = config["raspberryPi"]["voiceLEDPin"]
+    if errorLEDPin == None:
+        print("\033[91m {}\033[00m".format("Error: Please set the \"errorLEDPin:\" in \"config.yml\""))
+    if recognizingLEDPin == None:
+        print("\033[91m {}\033[00m".format("Error: Please set the \"recognizingLEDPin:\" in \"config.yml\""))
+    if voiceLEDPin == None:
+        print("\033[91m {}\033[00m".format("Error: Please set the \"voiceLEDPin:\" in \"config.yml\""))
 
 state = config["state"]
 if state == "":
@@ -14,7 +28,7 @@ if state == "":
     state = "newyork"
 
 energyThreshold = config["energyThreshold"]
-if energyThreshold == "":
+if energyThreshold == None:
     print("\033[91m {}\033[00m".format("Error: Please set the \"energyThreshold:\" in \"config.yml\""))
     energyThreshold = 300
 
@@ -73,27 +87,91 @@ def getVoiceInput():
 def runAssist():
     voiceInput = getVoiceInput()
     if "assist" in voiceInput:
-        tts("how can i help")
+        if raspberryPiEnabled == True:
+            recognizingLEDPin.on()
+            sleep(1)
+            recognizingLEDPin.off()
+            voiceLEDPin.on()
+            tts("how can i help")
+            sleep(1)
+            voiceLEDPin.off()
+        else:
+            tts("how can i help")
         voiceInput = getVoiceInput()
         if "time" in voiceInput:
-            print("Time: " + timeNow)
-            tts("the current time is " + timeNow)
+            if raspberryPiEnabled == True:
+                recognizingLEDPin.on()
+                sleep(1)
+                recognizingLEDPin.off()
+                voiceLEDPin.on()
+                print("Time: " + timeNow)
+                tts("the current time is " + timeNow)
+                sleep(1)
+                voiceLEDPin.off()
+            else:
+                print("Time: " + timeNow)
+                tts("the current time is " + timeNow) 
         elif "date" in voiceInput:
-            print("Date: " + dateNow)
-            tts("the current date is " + dateNow)
+            if raspberryPiEnabled == True:
+                recognizingLEDPin.on()
+                sleep(1)
+                recognizingLEDPin.off()
+                voiceLEDPin.on()
+                print("Date: " + dateNow)
+                tts("the current date is " + dateNow)
+                sleep(1)
+                voiceLEDPin.off()
+            else:
+                print("Date: " + dateNow)
+                tts("the current date is " + dateNow)
         elif "weather" in voiceInput:
-            print("Weather Description: " + weatherDesc)
-            print("Temperature: " + temp + "°" + temperatureUnit)
-            print("Feels Like: " + feelsLike + "°" + temperatureUnit)
-            print("Humidity: " + humidity + "%")
-            tts(weatherDesc + "at" + temp + "°" + temperatureUnitText + "feels like " + feelsLike + " with a humidity of " + humidity + "%")
+            if raspberryPiEnabled == True:
+                recognizingLEDPin.on()
+                sleep(1)
+                recognizingLEDPin.off()
+                voiceLEDPin.on()
+                print("Weather Description: " + weatherDesc)
+                print("Temperature: " + temp + "°" + temperatureUnit)
+                print("Feels Like: " + feelsLike + "°" + temperatureUnit)
+                print("Humidity: " + humidity + "%")
+                tts(weatherDesc + "at" + temp + "°" + temperatureUnitText + "feels like " + feelsLike + " with a humidity of " + humidity + "%")
+                sleep(1)
+                voiceLEDPin.off()
+            else:
+                print("Weather Description: " + weatherDesc)
+                print("Temperature: " + temp + "°" + temperatureUnit)
+                print("Feels Like: " + feelsLike + "°" + temperatureUnit)
+                print("Humidity: " + humidity + "%")
+                tts(weatherDesc + "at" + temp + "°" + temperatureUnitText + "feels like " + feelsLike + " with a humidity of " + humidity + "%")
         elif "exit" in voiceInput:
-            print("Exiting...")
-            tts("exiting, goodbye")
-            exit()
+            if raspberryPiEnabled == True:
+                recognizingLEDPin.on()
+                sleep(1)
+                recognizingLEDPin.off()
+                voiceLEDPin.on()
+                print("Exiting...")
+                tts("exiting, goodbye")
+                sleep(1)
+                voiceLEDPin.off()
+                exit()
+            else:
+                print("Exiting...")
+                tts("exiting, goodbye")
+                exit()
         else:
-            print("Command not recognized")
-            tts("i did not get that, can you please try again")
+            if raspberryPiEnabled == True:
+                recognizingLEDPin.on()
+                sleep(1)
+                recognizingLEDPin.off()
+                voiceLEDPin.on()
+                print("Command not recognized")
+                tts("i did not get that, can you please try again")
+                sleep(1)
+                voiceLEDPin.off()
+                exit()
+            else:
+                print("Command not recognized")
+                tts("i did not get that, can you please try again")
 
 while True:
     runAssist()

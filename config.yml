@@ -1,4 +1,10 @@
 # * Required
 state: "" # choose state of  (e.g. "newyork") *
 temperatureUnit: "" # "ceclius" or "fahrenheit" *
-energyThreshold: 300 # do not touch unless you know what you are doing *
+energyThreshold: 300 # do not touch unless you know what you are doing. *
+
+raspberryPi:
+  enabled: False # Enables support for Raspberry Pi using the GPIO pins.
+  errorLEDPin: # Pin for error LED.
+  recognizingLEDPin: # Pin for recognizing LED.
+  voiceLEDPin: # Pin for voice LED.
