@@ -10,12 +10,12 @@ config = EnvYAML("config.yml")
 
 state = config["state"]
 if state == "":
-    print("Error: Please set the \"state:\" in \"config.yml\"")
+    print("\033[91m {}\033[00m".format("Error: Please set the \"state:\" in \"config.yml\""))
     state = "newyork"
 
 energyThreshold = config["energyThreshold"]
 if energyThreshold == "":
-    print("Error: Please set the \"energyThreshold:\" in \"config.yml\"")
+    print("\033[91m {}\033[00m".format("Error: Please set the \"energyThreshold:\" in \"config.yml\""))
     energyThreshold = 300
 
 listener = sr.Recognizer()
@@ -32,7 +32,7 @@ elif temperatureUnit == "celcius":
     temperatureUnit = "C"
     temperatureUnitText = "celcius"
 else:
-    print("Error: Please set the \"temperatureUnit:\" in \"config.yml\"")
+    print("\033[91m {}\033[00m".format("Error: Please set the \"temperatureUnit:\" in \"config.yml\""))
     temperatureUnit = "F"
     temperatureUnitText = "fahrenheit"
 
