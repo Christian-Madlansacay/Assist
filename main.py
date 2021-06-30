@@ -52,14 +52,14 @@ def tts(text):
 
 def getVoiceInput():
     with sr.Microphone() as source:
-        print("Listening...")
+        print("\033[97m {}\033[00m".format("Listening..."))
         listener.pause_threshould = 1
         listener.dynamic_energy_threshold = False
         listener.energy_threshold = energyThreshold
         voice = listener.listen(source)
 
     try:
-        print("Recognizing...")
+        print("\033[97m {}\033[00m".format("Recognizing..."))
         voiceInput = listener.recognize_google(voice, language ="en-us")
         print("Raw Voice Input: " + voiceInput)
         voiceInput = voiceInput.lower()
