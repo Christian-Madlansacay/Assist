@@ -1,12 +1,12 @@
 import os
-from envyaml import EnvYAML
 import speech_recognition as sr
-from gtts import gTTS
 import playsound
 import datetime as date
-from time import sleep
 import requests
 from gpiozero import LED
+from time import sleep
+from gtts import gTTS
+from envyaml import EnvYAML
 
 config = EnvYAML("config.yml")
 
