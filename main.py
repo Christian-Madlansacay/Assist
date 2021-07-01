@@ -143,6 +143,22 @@ def runAssist():
                 print("Feels Like: " + feelsLike + "°" + temperatureUnit)
                 print("Humidity: " + humidity + "%")
                 tts(weatherDesc + "at" + temp + "°" + temperatureUnitText + "feels like " + feelsLike + " with a humidity of " + humidity + "%")
+        elif "repeat" in voiceInput:
+            if raspberryPiEnabled == True:
+                recognizingLEDPin.on()
+                sleep(1)
+                recognizingLEDPin.off()
+                voiceLEDPin.on()
+                voiceInput = voiceInput.replace("repeat", "")
+                print("User Said: " + voiceInput)
+                tts(voiceInput)
+                sleep(1)
+                voiceLEDPin.off()
+                exit()
+            else:
+                voiceInput = voiceInput.replace("repeat", "")
+                print("User Said: " + voiceInput)
+                tts(voiceInput)
         elif "exit" in voiceInput:
             if raspberryPiEnabled == True:
                 recognizingLEDPin.on()
