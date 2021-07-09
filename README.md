@@ -1,22 +1,6 @@
 # Assist
 An easy to use, friendly voice assistant written in Python.
 
-## Required Libraries
-
-`pip install gtts`
-
-`pip install playsound`
-
-`pip install speechrecognition`
-
-`pip install pyaudio`
-
-`pip install envyaml`
-
-`pip install datetime`
-
-`pip install requests`
-
 ## Setup
 *Python is required, click [here](https://www.python.org/downloads/) for more information.*
 
@@ -30,9 +14,12 @@ Extract the ZIP file to a desired location.
 Open the `config.yml` file in a text editor and set all the required values to your needs.
 
 **Step 4**
-Open a terminal in the folder.
+Open a terminal in the folder downloaded.
 
 **Step 5**
+Run the command `pip install -r requirements.txt`.
+
+**Step 6**
 Run the command `python main.py` (`python3 main.py` on Linux)
 
 ## Credits
