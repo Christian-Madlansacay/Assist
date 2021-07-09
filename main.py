@@ -22,11 +22,6 @@ if raspberryPiEnabled == True:
     if voiceLEDPin == None:
         print("\033[91m {}\033[00m".format("Error: Please set the \"voiceLEDPin:\" in \"config.yml\""))
 
-state = config["state"]
-if state == "":
-    print("\033[91m {}\033[00m".format("Error: Please set the \"state:\" in \"config.yml\""))
-    state = "newyork"
-
 energyThreshold = config["energyThreshold"]
 if energyThreshold == None:
     print("\033[91m {}\033[00m".format("Error: Please set the \"energyThreshold:\" in \"config.yml\""))
@@ -50,12 +45,6 @@ else:
     temperatureUnit = "F"
     temperatureUnitText = "fahrenheit"
 
-weatherRequest = requests.get("http://wttr.in/" + state +"?format=j1") 
-weatherData = weatherRequest.json()
-temp = weatherData["weather"][0]["hourly"][0]["temp" + temperatureUnit]
-feelsLike = weatherData["weather"][0]["hourly"][0]["FeelsLike" + temperatureUnit]
-humidity = weatherData["weather"][0]["hourly"][0]["humidity"]
-weatherDesc = weatherData["weather"][0]["hourly"][0]["weatherDesc"][0]["value"]
 
 def tts(text):
     tts = gTTS(text=text, lang="en")
@@ -63,6 +52,12 @@ def tts(text):
     tts.save(ttsFile)
     playsound.playsound(ttsFile)
     os.remove("tts.mp3")
+
+def getWeather():
+    weatherRequest = requests.get("http://wttr.in/?format=j1") 
+    weatherData = weatherRequest.json()
+
+    return weatherData["current_condition"][0]
 
 def getVoiceInput():
     with sr.Microphone() as source:
@@ -90,10 +85,10 @@ def runAssist():
             tts("how can i help")
             sleep(1)
             voiceLEDPin.off()
+            recognizingLEDPin.on()
         else:
             tts("how can i help")
         voiceInput = getVoiceInput()
-        recognizingLEDPin.on()
         if "time" in voiceInput:
             if raspberryPiEnabled == True:
                 voiceLEDPin.on()
@@ -115,6 +110,11 @@ def runAssist():
                 print("Date: " + dateNow)
                 tts("the current date is " + dateNow)
         elif "weather" in voiceInput:
+            currentWeather = getWeather()
+            temp = currentWeather["temp_" + temperatureUnit]
+            feelsLike = currentWeather["FeelsLike" + temperatureUnit]
+            humidity = currentWeather["humidity"]
+            weatherDesc = currentWeather["weatherDesc"][0]["value"]
             if raspberryPiEnabled == True:
                 voiceLEDPin.on()
                 print("Weather Description: " + weatherDesc)

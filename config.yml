@@ -1,5 +1,4 @@
 # * Required
-state: "" # choose state of  (e.g. "newyork") *
 temperatureUnit: "" # "celsius" or "fahrenheit" *
 energyThreshold: 300 # do not touch unless you know what you are doing. *
 
