@@ -71,13 +71,11 @@ def getVoiceInput():
         listener.dynamic_energy_threshold = False
         listener.energy_threshold = energyThreshold
         voice = listener.listen(source)
-
     try:
         print("\033[97m {}\033[00m".format("Recognizing..."))
         voiceInput = listener.recognize_google(voice, language ="en-us")
         print("Raw Voice Input: " + voiceInput)
         voiceInput = voiceInput.lower()
-
     except Exception as e:
         print(e)
         return "None"
