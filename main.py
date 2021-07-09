@@ -86,9 +86,6 @@ def runAssist():
     voiceInput = getVoiceInput()
     if "assist" in voiceInput:
         if raspberryPiEnabled == True:
-            recognizingLEDPin.on()
-            sleep(1)
-            recognizingLEDPin.off()
             voiceLEDPin.on()
             tts("how can i help")
             sleep(1)
@@ -96,11 +93,9 @@ def runAssist():
         else:
             tts("how can i help")
         voiceInput = getVoiceInput()
+        recognizingLEDPin.on()
         if "time" in voiceInput:
             if raspberryPiEnabled == True:
-                recognizingLEDPin.on()
-                sleep(1)
-                recognizingLEDPin.off()
                 voiceLEDPin.on()
                 print("Time: " + timeNow)
                 tts("the current time is " + timeNow)
@@ -111,9 +106,6 @@ def runAssist():
                 tts("the current time is " + timeNow) 
         elif "date" in voiceInput:
             if raspberryPiEnabled == True:
-                recognizingLEDPin.on()
-                sleep(1)
-                recognizingLEDPin.off()
                 voiceLEDPin.on()
                 print("Date: " + dateNow)
                 tts("the current date is " + dateNow)
@@ -124,9 +116,6 @@ def runAssist():
                 tts("the current date is " + dateNow)
         elif "weather" in voiceInput:
             if raspberryPiEnabled == True:
-                recognizingLEDPin.on()
-                sleep(1)
-                recognizingLEDPin.off()
                 voiceLEDPin.on()
                 print("Weather Description: " + weatherDesc)
                 print("Temperature: " + temp + "°" + temperatureUnit)
@@ -143,9 +132,6 @@ def runAssist():
                 tts(weatherDesc + "at" + temp + "°" + temperatureUnitText + "feels like " + feelsLike + " with a humidity of " + humidity + "%")
         elif "repeat" in voiceInput:
             if raspberryPiEnabled == True:
-                recognizingLEDPin.on()
-                sleep(1)
-                recognizingLEDPin.off()
                 voiceLEDPin.on()
                 voiceInput = voiceInput.replace("repeat", "")
                 print("User Said: " + voiceInput)
@@ -159,9 +145,6 @@ def runAssist():
                 tts(voiceInput)
         elif "exit" in voiceInput:
             if raspberryPiEnabled == True:
-                recognizingLEDPin.on()
-                sleep(1)
-                recognizingLEDPin.off()
                 voiceLEDPin.on()
                 print("Exiting...")
                 tts("exiting, goodbye")
@@ -174,15 +157,12 @@ def runAssist():
                 exit()
         else:
             if raspberryPiEnabled == True:
-                recognizingLEDPin.on()
-                sleep(1)
-                recognizingLEDPin.off()
                 voiceLEDPin.on()
                 print("Command not recognized")
                 tts("i did not get that, can you please try again")
                 sleep(1)
                 voiceLEDPin.off()
-                exit()
+                recognizingLEDPin.off()
             else:
                 print("Command not recognized")
                 tts("i did not get that, can you please try again")
