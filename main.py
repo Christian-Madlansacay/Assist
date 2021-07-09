@@ -45,7 +45,6 @@ else:
     temperatureUnit = "F"
     temperatureUnitText = "fahrenheit"
 
-
 def tts(text):
     tts = gTTS(text=text, lang="en")
     ttsFile = "tts.mp3"
