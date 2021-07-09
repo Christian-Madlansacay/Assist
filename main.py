@@ -96,6 +96,7 @@ def runAssist():
                 tts("the current time is " + timeNow)
                 sleep(1)
                 voiceLEDPin.off()
+                recognizingLEDPin.off()
             else:
                 print("Time: " + timeNow)
                 tts("the current time is " + timeNow) 
@@ -106,6 +107,7 @@ def runAssist():
                 tts("the current date is " + dateNow)
                 sleep(1)
                 voiceLEDPin.off()
+                recognizingLEDPin.off()
             else:
                 print("Date: " + dateNow)
                 tts("the current date is " + dateNow)
@@ -124,6 +126,7 @@ def runAssist():
                 tts(weatherDesc + "at" + temp + "°" + temperatureUnitText + "feels like " + feelsLike + " with a humidity of " + humidity + "%")
                 sleep(1)
                 voiceLEDPin.off()
+                recognizingLEDPin.off()
             else:
                 print("Weather Description: " + weatherDesc)
                 print("Temperature: " + temp + "°" + temperatureUnit)
@@ -138,7 +141,7 @@ def runAssist():
                 tts(voiceInput)
                 sleep(1)
                 voiceLEDPin.off()
-                exit()
+                recognizingLEDPin.off()
             else:
                 voiceInput = voiceInput.replace("repeat", "")
                 print("User Said: " + voiceInput)
@@ -150,6 +153,7 @@ def runAssist():
                 tts("exiting, goodbye")
                 sleep(1)
                 voiceLEDPin.off()
+                recognizingLEDPin.off()
                 exit()
             else:
                 print("Exiting...")
