@@ -3,7 +3,7 @@ import speech_recognition as sr
 import playsound
 import datetime as date
 import requests
-import gpiozero
+from gpiozero import LED
 from time import sleep
 from gtts import gTTS
 from envyaml import EnvYAML
