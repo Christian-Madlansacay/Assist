@@ -42,9 +42,9 @@ temperatureUnit = config["temperatureUnit"]
 if temperatureUnit == "fahrenheit":
     temperatureUnit = "F"
     temperatureUnitText = "fahrenheit"
-elif temperatureUnit == "celcius":
+elif temperatureUnit == "celsius":
     temperatureUnit = "C"
-    temperatureUnitText = "celcius"
+    temperatureUnitText = "celsius"
 else:
     print("\033[91m {}\033[00m".format("Error: Please set the \"temperatureUnit:\" in \"config.yml\""))
     temperatureUnit = "F"
