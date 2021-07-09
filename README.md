@@ -4,7 +4,7 @@ An easy to use, friendly voice assistant written in Python.
 ## Setup
 *Python is required, click [here](https://www.python.org/downloads/) for more information.*
 
-**Step 1:**
+**Step 1**
 Click the green "Code" button on the repository page and click the option that says "Download ZIP".
 
 **Step 2**
