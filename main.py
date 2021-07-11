@@ -13,7 +13,6 @@ config = EnvYAML("config.yml")
 
 raspberryPiEnabled = config["raspberryPi"]["enabled"]
 
-
 _errorLED = None
 _recognizingLED = None
 _voiceLED = None
@@ -157,7 +156,7 @@ def runAssist():
             tts("It is " + weatherDesc + "at" + temp + "°" + temperatureUnitText + ",feels like " + feelsLike + ", with a humidity of " + humidity + "%")
         elif "repeat" in voiceInput:
             voiceInput = voiceInput.replace("repeat", "")
-            print("User Said: " + voiceInput)
+            print("User Said:" + voiceInput)
             tts(voiceInput)
         elif "exit" in voiceInput:
             print("Exiting...")
@@ -168,7 +167,6 @@ def runAssist():
             print("Command not recognized")
             tts("i did not get that, can you please try again")
             errorLED(False)
-            
 
 while True:
     runAssist()
