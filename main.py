@@ -128,7 +128,8 @@ def getVoiceInput():
 def runAssist():
     voiceInput = getVoiceInput()
     if "assist" in voiceInput:
-        tts("how can i help")
+        #tts("how can i help")
+        playsound.playsound("sound.wav")
         voiceInput = getVoiceInput()
         if "time" in voiceInput:
             print("Time: " + timeNow)
@@ -153,7 +154,7 @@ def runAssist():
             print("Temperature: " + temp + "°" + temperatureUnit)
             print("Feels Like: " + feelsLike + "°" + temperatureUnit)
             print("Humidity: " + humidity + "%")
-            tts(weatherDesc + "at" + temp + "°" + temperatureUnitText + "feels like " + feelsLike + " with a humidity of " + humidity + "%")
+            tts("It is " + weatherDesc + "at" + temp + "°" + temperatureUnitText + ",feels like " + feelsLike + ", with a humidity of " + humidity + "%")
         elif "repeat" in voiceInput:
             voiceInput = voiceInput.replace("repeat", "")
             print("User Said: " + voiceInput)
@@ -167,6 +168,7 @@ def runAssist():
             print("Command not recognized")
             tts("i did not get that, can you please try again")
             errorLED(False)
+            
 
 while True:
     runAssist()
