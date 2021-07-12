@@ -128,16 +128,16 @@ def runAssist():
     voiceInput = getVoiceInput()
     if "assist" in voiceInput:
         #tts("how can i help")
-        playsound.playsound("recognition.wav")
+        playsound.playsound("Assets/recognition.wav")
         voiceInput = getVoiceInput()
         if "time" in voiceInput:
             print("Time: " + timeNow)
             tts("the current time is " + timeNow) 
-            playsound.playsound("exit.wav")
+            playsound.playsound("Assets/exit.wav")
         elif "date" in voiceInput:
             print("Date: " + dateNow)
             tts("the current date is " + dateNow)
-            playsound.playsound("exit.wav")
+            playsound.playsound("Assets/exit.wav")
         elif "weather" in voiceInput:
             try:
                 currentWeather = getWeather()
@@ -156,23 +156,23 @@ def runAssist():
             print("Feels Like: " + feelsLike + "°" + temperatureUnit)
             print("Humidity: " + humidity + "%")
             tts("It is " + weatherDesc + "at" + temp + "°" + temperatureUnitText + ",feels like " + feelsLike + ", with a humidity of " + humidity + "%")
-            playsound.playsound("exit.wav")
+            playsound.playsound("Assets/exit.wav")
         elif "repeat" in voiceInput:
             voiceInput = voiceInput.replace("repeat", "")
             print("User Said:" + voiceInput)
             tts(voiceInput)
-            playsound.playsound("exit.wav")
+            playsound.playsound("Assets/exit.wav")
         elif "exit" in voiceInput:
             print("Exiting...")
             tts("exiting, goodbye")
-            playsound.playsound("exit.wav")
+            playsound.playsound("Assets/exit.wav")
             exit()
         else:
             errorLED(True)
             print("Command not recognized")
             tts("i did not get that, can you please try again")
             errorLED(False)
-            playsound.playsound("exit.wav")
+            playsound.playsound("Assets/exit.wav")
 
 while True:
     runAssist()
