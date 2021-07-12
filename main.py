@@ -13,6 +13,7 @@ config = EnvYAML("config.yml")
 
 raspberryPiEnabled = config["raspberryPi"]["enabled"]
 
+#Do not use these objects, please use the functions found below
 _errorLED = None
 _recognizingLED = None
 _voiceLED = None
