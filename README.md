@@ -21,8 +21,3 @@ Run the command `pip install -r requirements.txt`.
 
 **Step 6**
 Run the command `python main.py` (`python3 main.py` on Linux)
-
-## Credits
-[Christian Madlansacay](https://solo.to/christianmadlansacay) (Creator)
-
-Mr_Diamond123 (Developer)
