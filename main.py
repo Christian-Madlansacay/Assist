@@ -5,6 +5,7 @@ import playsound
 import datetime as date
 import requests
 import gpiozero
+import wikipedia
 from time import sleep
 from gtts import gTTS
 from envyaml import EnvYAML
@@ -13,7 +14,7 @@ config = EnvYAML("config.yml")
 
 raspberryPiEnabled = config["raspberryPi"]["enabled"]
 
-#Do not use these objects, please use the functions found below
+# Do not use these objects, please use the functions found below
 _errorLED = None
 _recognizingLED = None
 _voiceLED = None
@@ -126,11 +127,10 @@ def getVoiceInput():
     return voiceInput
 
 def runAssist():
-    voiceInput = getVoiceInput()
+    voiceInput = getVoiceInput().lower()
     if "assist" in voiceInput:
-        #tts("how can i help")
         playsound.playsound("Assets/recognition.wav")
-        voiceInput = getVoiceInput()
+        voiceInput = getVoiceInput().lower()
         if "time" in voiceInput:
             print("Time: " + timeNow)
             tts("the current time is " + timeNow) 
@@ -162,6 +162,12 @@ def runAssist():
             voiceInput = voiceInput.replace("repeat", "")
             print("User Said:" + voiceInput)
             tts(voiceInput)
+            playsound.playsound("Assets/exit.wav")
+        elif "wiki" in voiceInput or "wikipedia" in voiceInput or "search" in voiceInput or "google" in voiceInput:
+            voiceInput = voiceInput.replace("wikipedia", "").replace("wiki", "").replace("search", "").replace("google", "")
+            wikiResults = wikipedia.summary(voiceInput, sentences=1, auto_suggest=False)
+            print("Summary for: " + voiceInput + "\n" + wikiResults)
+            tts("according to wikipedia, " + wikiResults)
             playsound.playsound("Assets/exit.wav")
         elif "exit" in voiceInput:
             print("Exiting...")
