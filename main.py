@@ -6,6 +6,7 @@ import datetime as date
 import requests
 import gpiozero
 import wikipedia
+import pyjokes
 from time import sleep
 from gtts import gTTS
 from envyaml import EnvYAML
@@ -25,7 +26,7 @@ def setupRaspberryPi():
             gpiozero.pi_info()
         except BadPinFactory:
             print('This appears to not be a Raspberry Pi!')
-            return False 
+            return False
         errorLEDPin = config["raspberryPi"]["errorLEDPin"]
         recognizingLEDPin = config["raspberryPi"]["recognizingLEDPin"]
         voiceLEDPin = config["raspberryPi"]["voiceLEDPin"]
@@ -99,7 +100,7 @@ def tts(text):
     os.remove("tts.mp3")
 
 def getWeather():
-    weatherRequest = requests.get("http://wttr.in/?format=j1") 
+    weatherRequest = requests.get("http://wttr.in/?format=j1")
     weatherData = weatherRequest.json()
 
     return weatherData["current_condition"][0]
@@ -127,13 +128,13 @@ def getVoiceInput():
     return voiceInput
 
 def runAssist():
-    voiceInput = getVoiceInput().lower()
+    voiceInput = getVoiceInput()
     if "assist" in voiceInput:
         playsound.playsound("Assets/recognition.wav")
-        voiceInput = getVoiceInput().lower()
+        voiceInput = getVoiceInput()
         if "time" in voiceInput:
             print("Time: " + timeNow)
-            tts("the current time is " + timeNow) 
+            tts("the current time is " + timeNow)
             playsound.playsound("Assets/exit.wav")
         elif "date" in voiceInput:
             print("Date: " + dateNow)
@@ -147,7 +148,7 @@ def runAssist():
                 print("\033[91m {}\033[00m".format("Error: " + e))
                 tts("an issue occurred getting weather, please try again later ")
                 errorLED(False)
-                
+
             temp = currentWeather["temp_" + temperatureUnit]
             feelsLike = currentWeather["FeelsLike" + temperatureUnit]
             humidity = currentWeather["humidity"]
@@ -166,9 +167,13 @@ def runAssist():
         elif "wiki" in voiceInput or "wikipedia" in voiceInput or "search" in voiceInput or "google" in voiceInput:
             voiceInput = voiceInput.replace("wikipedia", "").replace("wiki", "").replace("search", "").replace("google", "")
             wikiResults = wikipedia.summary(voiceInput, sentences=1, auto_suggest=False)
-            print("Summary for: " + voiceInput + "\n" + wikiResults)
+            print("Summary for:" + voiceInput + "\n" + wikiResults)
             tts("according to wikipedia, " + wikiResults)
             playsound.playsound("Assets/exit.wav")
+        elif "joke" in voiceInput:
+            joke = pyjokes.get_joke()
+            print("Joke: " + joke)
+            tts(joke)
         elif "exit" in voiceInput:
             print("Exiting...")
             tts("exiting, goodbye")

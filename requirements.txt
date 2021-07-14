@@ -6,3 +6,4 @@ envyaml
 datetime
 requests
 gpiozero
+pyjokes
