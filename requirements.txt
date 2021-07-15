@@ -7,3 +7,4 @@ datetime
 requests
 gpiozero
 pyjokes
+wikipedia
