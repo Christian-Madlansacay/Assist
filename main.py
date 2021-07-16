@@ -146,7 +146,7 @@ def runAssist():
             except Exception as e:
                 errorLED(True)
                 print("\033[91m {}\033[00m".format("Error: " + e))
-                tts("an issue occurred getting weather, please try again later ")
+                tts("an issue occurred getting weather, please try again later")
                 errorLED(False)
 
             temp = currentWeather["temp_" + temperatureUnit]
@@ -162,9 +162,15 @@ def runAssist():
             voiceInput = voiceInput.replace("repeat", "")
             print("User Said:" + voiceInput)
             tts(voiceInput)
-        elif "wiki" in voiceInput or "wikipedia" in voiceInput or "search" in voiceInput or "google" in voiceInput:
-            voiceInput = voiceInput.replace("wikipedia", "").replace("wiki", "").replace("search", "").replace("google", "")
-            wikiResults = wikipedia.summary(voiceInput, sentences=1, auto_suggest=False)
+        elif "wiki" in voiceInput or "wikipedia" in voiceInput or "search" in voiceInput or "google" in voiceInput or "search for" in voiceInput:
+            voiceInput = voiceInput.replace("wikipedia", "").replace("wiki", "").replace("search", "").replace("google", "").replace("search for", "")
+            try:
+                wikiResults = wikipedia.summary(voiceInput, sentences=1, auto_suggest=False)
+            except Exception as e:
+                errorLED(True)
+                print("\033[91m {}\033[00m".format("Error: " + e))
+                tts("an issue occurred getting the wikipedia page, please try again later")
+                errorLED(False)        
             print("Summary for:" + voiceInput + "\n" + wikiResults)
             tts("according to wikipedia, " + wikiResults)
             playsound.playsound("Assets/exit.wav")
