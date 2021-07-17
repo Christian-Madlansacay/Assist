@@ -143,21 +143,20 @@ def runAssist():
         elif "weather" in voiceInput:
             try:
                 currentWeather = getWeather()
+                temp = currentWeather["temp_" + temperatureUnit]
+                feelsLike = currentWeather["FeelsLike" + temperatureUnit]
+                humidity = currentWeather["humidity"]
+                weatherDesc = currentWeather["weatherDesc"][0]["value"]
+                print("Weather Description: " + weatherDesc)
+                print("Temperature: " + temp + "°" + temperatureUnit)
+                print("Feels Like: " + feelsLike + "°" + temperatureUnit)
+                print("Humidity: " + humidity + "%")
+                tts("It is " + weatherDesc + "at" + temp + "°" + temperatureUnitText + ",feels like " + feelsLike + ", with a humidity of " + humidity + "%")
             except Exception as e:
                 errorLED(True)
                 print("\033[91m {}\033[00m".format("Error: " + e))
                 tts("an issue occurred getting weather, please try again later")
                 errorLED(False)
-
-            temp = currentWeather["temp_" + temperatureUnit]
-            feelsLike = currentWeather["FeelsLike" + temperatureUnit]
-            humidity = currentWeather["humidity"]
-            weatherDesc = currentWeather["weatherDesc"][0]["value"]
-            print("Weather Description: " + weatherDesc)
-            print("Temperature: " + temp + "°" + temperatureUnit)
-            print("Feels Like: " + feelsLike + "°" + temperatureUnit)
-            print("Humidity: " + humidity + "%")
-            tts("It is " + weatherDesc + "at" + temp + "°" + temperatureUnitText + ",feels like " + feelsLike + ", with a humidity of " + humidity + "%")
         elif "repeat" in voiceInput:
             voiceInput = voiceInput.replace("repeat", "")
             print("User Said:" + voiceInput)
@@ -166,14 +165,14 @@ def runAssist():
             voiceInput = voiceInput.replace("wikipedia", "").replace("wiki", "").replace("search", "").replace("google", "").replace("search for", "")
             try:
                 wikiResults = wikipedia.summary(voiceInput, sentences=1, auto_suggest=False)
+                print("Summary for:" + voiceInput + "\n" + wikiResults)
+                tts("according to wikipedia, " + wikiResults)
+                playsound.playsound("Assets/exit.wav")
             except Exception as e:
                 errorLED(True)
-                print("\033[91m {}\033[00m".format("Error: " + e))
+                print("\033[91m {}\033[00m".format("Error: " + str(e)))
                 tts("an issue occurred getting the wikipedia page, please try again later")
                 errorLED(False)        
-            print("Summary for:" + voiceInput + "\n" + wikiResults)
-            tts("according to wikipedia, " + wikiResults)
-            playsound.playsound("Assets/exit.wav")
         elif "joke" in voiceInput:
             joke = pyjokes.get_joke()
             print("Joke: " + joke)
