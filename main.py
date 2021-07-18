@@ -2,11 +2,11 @@ import os
 from gpiozero.exc import BadPinFactory
 import speech_recognition as sr
 import playsound
-import datetime as date
 import requests
 import gpiozero
 import wikipedia
 import pyjokes
+import datetime
 from time import sleep
 from gtts import gTTS
 from envyaml import EnvYAML
@@ -76,10 +76,6 @@ if energyThreshold == None:
 
 listener = sr.Recognizer()
 
-now = date.datetime.now()
-dateNow = now.strftime("%A, %B %d")
-timeNow = now.strftime("%I:%M %p")
-
 temperatureUnit = config["temperatureUnit"]
 if temperatureUnit == "fahrenheit":
     temperatureUnit = "F"
@@ -98,6 +94,16 @@ def tts(text):
     tts.save(ttsFile)
     playsound.playsound(ttsFile)
     os.remove("tts.mp3")
+
+now = datetime.datetime.now()
+
+def getTime():
+    timeNow = now.strftime("%I:%M %p")
+    return timeNow
+
+def getDate():
+    dateNow = now.strftime("%A, %B %d")
+    return dateNow
 
 def getWeather():
     weatherRequest = requests.get("http://wttr.in/?format=j1")
@@ -133,12 +139,12 @@ def runAssist():
         playsound.playsound("Assets/recognition.wav")
         voiceInput = getVoiceInput()
         if "time" in voiceInput:
+            timeNow = getTime()
             print("Time: " + timeNow)
             tts("the current time is " + timeNow)
-            playsound.playsound("Assets/exit.wav")
-            tts("the current time is " + timeNow) 
         elif "date" in voiceInput:
-            print("Date: " + dateNow)
+            dateNow = getDate()
+            print("Date: " + str(dateNow))
             tts("the current date is " + dateNow)
         elif "weather" in voiceInput:
             try:
