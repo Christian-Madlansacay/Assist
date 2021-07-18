@@ -127,6 +127,7 @@ def getVoiceInput():
         recognizingLED(False)
         print("Raw Voice Input: " + voiceInput)
         voiceInput = voiceInput.lower()
+        voiceInput = voiceInput.split(" ")
     except Exception as e:
         print(e)
         return "None"
@@ -163,17 +164,23 @@ def runAssist():
                 print("\033[91m {}\033[00m".format("Error: " + e))
                 tts("an issue occurred getting weather, please try again later")
                 errorLED(False)
-        elif "repeat" in voiceInput:
-            voiceInput = voiceInput.replace("repeat", "")
-            print("User Said:" + voiceInput)
+        elif "repeat" in voiceInput[0]:
+            voiceInput.pop(0)
+            voiceInput = " ".join(voiceInput)
+            print("User Said: " + voiceInput)
             tts(voiceInput)
-        elif "wiki" in voiceInput or "wikipedia" in voiceInput or "search" in voiceInput or "google" in voiceInput or "search for" in voiceInput:
-            voiceInput = voiceInput.replace("wikipedia", "").replace("wiki", "").replace("search", "").replace("google", "").replace("search for", "")
+        elif "wiki" in voiceInput[0] or "wikipedia" in voiceInput[0] or "search" in voiceInput[0] or "google" in voiceInput[0] or "search for" in voiceInput[0]:
+            voiceInput.pop(0)
+            voiceInput = " ".join(voiceInput)
             try:
                 wikiResults = wikipedia.summary(voiceInput, sentences=1, auto_suggest=False)
                 print("Summary for:" + voiceInput + "\n" + wikiResults)
                 tts("according to wikipedia, " + wikiResults)
-                playsound.playsound("Assets/exit.wav")
+            except wikipedia.PageError:
+                errorLED(True)
+                print("\033[91m {}\033[00m".format("Error: " + "Page not found"))
+                tts("sorry, i could not find that")
+                errorLED(False)  
             except Exception as e:
                 errorLED(True)
                 print("\033[91m {}\033[00m".format("Error: " + str(e)))
