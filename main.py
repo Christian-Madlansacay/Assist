@@ -4,7 +4,6 @@ import speech_recognition as sr
 import playsound
 import requests
 import gpiozero
-import wikipedia
 import pyjokes
 import datetime
 from time import sleep
@@ -97,6 +96,12 @@ def tts(text):
     playsound.playsound(ttsFile)
     os.remove("tts.mp3")
 
+def remove_html_tags(text):
+    """Remove html tags from a string -  thx stackoverflow"""
+    import re
+    clean = re.compile('<.*?>')
+    return re.sub(clean, '', text)
+
 now = datetime.datetime.now()
 
 def getTime():
@@ -113,6 +118,13 @@ def getWeather():
 
     return weatherData["current_condition"][0]
 
+def getWikipedia(query):
+    wikipediaRequest = requests.get("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=description|info&list=search&utf8=1&srsearch=" + query + "&srsort=relevance")
+    wikipediaData = wikipediaRequest.json()
+
+   #pprint.pprint(wikipediaData)
+
+    return wikipediaData["query"]["search"]
 def getVoiceInput():
     with sr.Microphone() as source:
         voiceLED(True)
@@ -174,20 +186,16 @@ def runAssist():
         elif "wiki" in voiceInput[0] or "wikipedia" in voiceInput[0] or "search" in voiceInput[0] or "google" in voiceInput[0] or "search for" in voiceInput[0]:
             voiceInput.pop(0)
             voiceInput = " ".join(voiceInput)
-            try:
-                wikiResults = wikipedia.summary(voiceInput, sentences=1, auto_suggest=False)
-                print("Summary for:" + voiceInput + "\n" + wikiResults)
-                tts("according to wikipedia, " + wikiResults)
-            except wikipedia.PageError:
-                errorLED(True)
-                print("\033[91m {}\033[00m".format("Error: " + "Page not found"))
-                tts("sorry, i could not find that")
-                errorLED(False)  
+            try: 
+                articles = getWikipedia(voiceInput)
+                article = articles[0]
+                print(article["title"] + " - " + remove_html_tags(article["snippet"]))
+                tts(remove_html_tags(article["snippet"]))
             except Exception as e:
                 errorLED(True)
-                print("\033[91m {}\033[00m".format("Error: " + str(e)))
-                tts("an issue occurred getting the wikipedia page, please try again later")
-                errorLED(False)        
+                print("\033[91m {}\033[00m".format("Error: " + e))
+                tts("an issue occurred getting wikipedia, please try again later")
+                errorLED(False)
         elif "joke" in voiceInput:
             joke = pyjokes.get_joke()
             print("Joke: " + joke)
@@ -200,7 +208,7 @@ def runAssist():
                 text = text + article["title"] + ", "
             print(text)
             tts(text)
-        elif "exit" in voiceInput:
+        elif "exit" in voiceInput or "stop" in voiceInput:
             print("Exiting...")
             tts("exiting, goodbye")
             playsound.playsound("Assets/exit.wav")

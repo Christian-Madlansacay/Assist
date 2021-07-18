@@ -7,5 +7,4 @@ datetime
 requests
 gpiozero
 pyjokes
-wikipedia
 gnews
