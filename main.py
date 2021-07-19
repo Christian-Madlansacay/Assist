@@ -11,6 +11,12 @@ from time import sleep
 from gtts import gTTS
 from envyaml import EnvYAML
 
+def printWhite(text):
+    print("\033[97m {}\033[00m".format(text))
+
+def printRed(text):
+    print("\033[91m {}\033[00m".format(text))
+
 config = EnvYAML("config.yml")
 
 raspberryPiEnabled = config["raspberryPi"]["enabled"]
@@ -31,13 +37,13 @@ def setupRaspberryPi():
         recognizingLEDPin = config["raspberryPi"]["recognizingLEDPin"]
         voiceLEDPin = config["raspberryPi"]["voiceLEDPin"]
         if errorLEDPin == None:
-            print("\033[91m {}\033[00m".format("Error: Please set the \"errorLEDPin:\" in \"config.yml\""))
+            printRed("Error: Please set the \"errorLEDPin:\" in \"config.yml\"")
             return False
         if recognizingLEDPin == None:
-            print("\033[91m {}\033[00m".format("Error: Please set the \"recognizingLEDPin:\" in \"config.yml\""))
+            printRed("Error: Please set the \"recognizingLEDPin:\" in \"config.yml\"")
             return False
         if voiceLEDPin == None:
-            print("\033[91m {}\033[00m".format("Error: Please set the \"voiceLEDPin:\" in \"config.yml\""))
+            printRed("Error: Please set the \"voiceLEDPin:\" in \"config.yml\"")
             return False
         _errorLED = gpiozero.LED(errorLEDPin)
         _recognizingLED = gpiozero.LED(recognizingLEDPin)
@@ -71,7 +77,7 @@ def voiceLED(value):
 
 energyThreshold = config["energyThreshold"]
 if energyThreshold == None:
-    print("\033[91m {}\033[00m".format("Error: Please set the \"energyThreshold:\" in \"config.yml\""))
+    printRed("Error: Please set the \"energyThreshold:\" in \"config.yml\"")
     energyThreshold = 300
 
 listener = sr.Recognizer()
@@ -84,7 +90,7 @@ elif temperatureUnit == "celsius":
     temperatureUnit = "C"
     temperatureUnitText = "celsius"
 else:
-    print("\033[91m {}\033[00m".format("Error: Please set the \"temperatureUnit:\" in \"config.yml\""))
+    printRed("Error: Please set the \"temperatureUnit:\" in \"config.yml\"")
     temperatureUnit = "F"
     temperatureUnitText = "fahrenheit"
 
@@ -95,8 +101,7 @@ def tts(text):
     playsound.playsound(ttsFile)
     os.remove("tts.mp3")
 
-def remove_html_tags(text):
-    """Remove html tags from a string -  thx stackoverflow"""
+def removeHtmlTags(text):
     import re
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
@@ -121,21 +126,19 @@ def getWikipedia(query):
     wikipediaRequest = requests.get("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=description|info&list=search&utf8=1&srsearch=" + query + "&srsort=relevance")
     wikipediaData = wikipediaRequest.json()
 
-   #pprint.pprint(wikipediaData)
-
     return wikipediaData["query"]["search"]
 
 def getVoiceInput():
     with sr.Microphone() as source:
         voiceLED(True)
-        print("\033[97m {}\033[00m".format("Listening..."))
+        print("Listening...")
         listener.pause_threshould = 1
         listener.dynamic_energy_threshold = False
         listener.energy_threshold = energyThreshold
         voice = listener.listen(source)
         voiceLED(False)
     try:
-        print("\033[97m {}\033[00m".format("Recognizing..."))
+        print("Recognizing...")
         recognizingLED(True)
         voiceInput = listener.recognize_google(voice, language ="en-us")
         recognizingLED(False)
@@ -155,11 +158,11 @@ def runAssist():
         voiceInput = getVoiceInput()
         if "time" in voiceInput:
             timeNow = getTime()
-            print("Time: " + timeNow)
+            printWhite("Time: " + timeNow)
             tts("the current time is " + timeNow)
         elif "date" in voiceInput:
             dateNow = getDate()
-            print("Date: " + str(dateNow))
+            printWhite("Date: " + str(dateNow))
             tts("the current date is " + dateNow)
         elif "weather" in voiceInput:
             try:
@@ -168,20 +171,20 @@ def runAssist():
                 feelsLike = currentWeather["FeelsLike" + temperatureUnit]
                 humidity = currentWeather["humidity"]
                 weatherDesc = currentWeather["weatherDesc"][0]["value"]
-                print("Weather Description: " + weatherDesc)
-                print("Temperature: " + temp + "°" + temperatureUnit)
-                print("Feels Like: " + feelsLike + "°" + temperatureUnit)
-                print("Humidity: " + humidity + "%")
+                printWhite("Weather Description: " + weatherDesc)
+                printWhite("Temperature: " + temp + "°" + temperatureUnit)
+                printWhite("Feels Like: " + feelsLike + "°" + temperatureUnit)
+                printWhite("Humidity: " + humidity + "%")
                 tts("It is " + weatherDesc + "at" + temp + "°" + temperatureUnitText + ",feels like " + feelsLike + ", with a humidity of " + humidity + "%")
             except Exception as e:
                 errorLED(True)
-                print("\033[91m {}\033[00m".format("Error: " + e))
+                printRed("Error: " + e)
                 tts("an issue occurred getting weather, please try again later")
                 errorLED(False)
         elif "repeat" in voiceInput[0]:
             voiceInput.pop(0)
             voiceInput = " ".join(voiceInput)
-            print("User Said: " + voiceInput)
+            printWhite("User Said: " + voiceInput)
             tts(voiceInput)
         elif "wiki" in voiceInput[0] or "wikipedia" in voiceInput[0] or "search" in voiceInput[0] or "google" in voiceInput[0] or "search for" in voiceInput[0]:
             voiceInput.pop(0)
@@ -189,27 +192,27 @@ def runAssist():
             try: 
                 wikipedia = getWikipedia(voiceInput)
                 wikiPage = wikipedia[0]
-                wikiSnippet = remove_html_tags(wikiPage["snippet"])
+                wikiSnippet = removeHtmlTags(wikiPage["snippet"])
                 wikiTitle = wikiPage["title"]
-                print("Snippet for " + wikiTitle + ":" + "\n" + wikiSnippet)
+                printWhite("Snippet for " + wikiTitle + ":" + "\n" + wikiSnippet)
                 tts("according to wikipedia, " + wikiSnippet)
             except Exception as e:
                 errorLED(True)
-                print("\033[91m {}\033[00m".format("Error: " + e))
+                printRed("Error: " + e)
                 tts("an issue occurred getting wikipedia, please try again later")
                 errorLED(False)
         elif "joke" in voiceInput:
             joke = pyjokes.get_joke()
-            print("Joke: " + joke)
+            printWhite("Joke: " + joke)
             tts(joke)
         elif "exit" in voiceInput or "stop" in voiceInput:
-            print("Exiting...")
+            printWhite("Exiting...")
             tts("exiting, goodbye")
             playsound.playsound("Assets/exit.wav")
             exit()
         else:
             errorLED(True)
-            print("Command not recognized")
+            printRed("Error: Command not recognized")
             tts("i did not get that, can you please try again")
             errorLED(False)
         playsound.playsound("Assets/exit.wav")
