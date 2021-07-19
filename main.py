@@ -9,7 +9,6 @@ import datetime
 from time import sleep
 from gtts import gTTS
 from envyaml import EnvYAML
-from gnews import GNews
 import pprint
 
 config = EnvYAML("config.yml")
@@ -200,14 +199,6 @@ def runAssist():
             joke = pyjokes.get_joke()
             print("Joke: " + joke)
             tts(joke)
-        elif "news" in voiceInput:
-            google_news = GNews(max_results=5, period='1d')
-            news = google_news.get_news('Linux')
-            text = "In the news today, "
-            for article in news:
-                text = text + article["title"] + ", "
-            print(text)
-            tts(text)
         elif "exit" in voiceInput or "stop" in voiceInput:
             print("Exiting...")
             tts("exiting, goodbye")
