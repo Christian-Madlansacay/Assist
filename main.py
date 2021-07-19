@@ -6,10 +6,10 @@ import requests
 import gpiozero
 import pyjokes
 import datetime
+import pprint
 from time import sleep
 from gtts import gTTS
 from envyaml import EnvYAML
-import pprint
 
 config = EnvYAML("config.yml")
 
@@ -124,6 +124,7 @@ def getWikipedia(query):
    #pprint.pprint(wikipediaData)
 
     return wikipediaData["query"]["search"]
+
 def getVoiceInput():
     with sr.Microphone() as source:
         voiceLED(True)
@@ -186,10 +187,12 @@ def runAssist():
             voiceInput.pop(0)
             voiceInput = " ".join(voiceInput)
             try: 
-                articles = getWikipedia(voiceInput)
-                article = articles[0]
-                print(article["title"] + " - " + remove_html_tags(article["snippet"]))
-                tts(remove_html_tags(article["snippet"]))
+                wikipedia = getWikipedia(voiceInput)
+                wikiPage = wikipedia[0]
+                wikiSnippet = remove_html_tags(wikiPage["snippet"])
+                wikiTitle = wikiPage["title"]
+                print("Snippet for " + wikiTitle + ":" + "\n" + wikiSnippet)
+                tts("according to wikipedia, " + wikiSnippet)
             except Exception as e:
                 errorLED(True)
                 print("\033[91m {}\033[00m".format("Error: " + e))
