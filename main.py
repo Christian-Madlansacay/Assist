@@ -178,7 +178,7 @@ def runAssist():
                 tts("It is " + weatherDesc + "at" + temp + "°" + temperatureUnitText + ",feels like " + feelsLike + ", with a humidity of " + humidity + "%")
             except Exception as e:
                 errorLED(True)
-                printRed("Error: " + e)
+                printRed("Error: " + str(e))
                 tts("an issue occurred getting weather, please try again later")
                 errorLED(False)
         elif "repeat" in voiceInput[0]:
@@ -198,7 +198,7 @@ def runAssist():
                 tts("according to wikipedia, " + wikiSnippet)
             except Exception as e:
                 errorLED(True)
-                printRed("Error: " + e)
+                printRed("Error: " + str(e))
                 tts("an issue occurred getting wikipedia, please try again later")
                 errorLED(False)
         elif "joke" in voiceInput:
