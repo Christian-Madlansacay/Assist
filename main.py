@@ -6,7 +6,6 @@ import requests
 import gpiozero
 import pyjokes
 import datetime
-import pprint
 from time import sleep
 from gtts import gTTS
 from envyaml import EnvYAML
