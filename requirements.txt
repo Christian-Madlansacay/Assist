@@ -1,5 +1,5 @@
 gtts
-playsound
+subprocess
 speechrecognition
 pyaudio
 envyaml

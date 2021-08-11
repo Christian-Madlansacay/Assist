@@ -1,6 +1,6 @@
 import os
 import speech_recognition as sr
-import playsound
+import subprocess
 import requests
 import gpiozero
 import pyjokes
@@ -74,6 +74,9 @@ def voiceLED(value):
         else:
             _voiceLED.off()
 
+def play(audioFile):
+    subprocess.call(["ffplay", "-nodisp", "-autoexit", audioFile])
+
 energyThreshold = config["energyThreshold"]
 if energyThreshold == None:
     printRed("Error: Please set the \"energyThreshold:\" in \"config.yml\"")
@@ -97,7 +100,7 @@ def tts(text):
     tts = gTTS(text=text, lang="en")
     ttsFile = "tts.mp3"
     tts.save(ttsFile)
-    playsound.playsound(ttsFile)
+    play(ttsFile)
     os.remove("tts.mp3")
 
 def removeHtmlTags(text):
@@ -153,7 +156,7 @@ def getVoiceInput():
 def runAssist():
     voiceInput = getVoiceInput()
     if "assist" in voiceInput:
-        playsound.playsound("Assets/recognition.wav")
+        play("Assets/recognition.wav")
         voiceInput = getVoiceInput()
         if "time" in voiceInput:
             timeNow = getTime()
@@ -207,14 +210,14 @@ def runAssist():
         elif "exit" in voiceInput or "stop" in voiceInput:
             printWhite("Exiting...")
             tts("exiting, goodbye")
-            playsound.playsound("Assets/exit.wav")
+            play("Assets/exit.wav")
             exit()
         else:
             errorLED(True)
             printRed("Error: Command not recognized")
             tts("i did not get that, can you please try again")
             errorLED(False)
-        playsound.playsound("Assets/exit.wav")
+        play("Assets/exit.wav")
 
 while True:
     runAssist()
