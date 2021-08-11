@@ -1,5 +1,4 @@
 gtts
-subprocess
 speechrecognition
 pyaudio
 envyaml
