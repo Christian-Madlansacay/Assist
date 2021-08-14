@@ -2,22 +2,22 @@
 An easy to use, friendly voice assistant written in Python.
 
 ## Setup
-*Python is required, click [here](https://www.python.org/downloads/) for more information.*
+*[Python](https://www.python.org/downloads/) and [Git](https://git-scm.com/downloads) are required.*
 
 **Step 1**
-Click the green "Code" button on the repository page and click the option that says "Download ZIP".
+Open a terminal in your desired directory.
 
 **Step 2**
-Extract the ZIP file to a desired location.
+Run the command `git clone https://github.com/Christian-Madlansacay/Assist`
+
+**Step 3**
+Go into the Assist folder by running the command `cd Assist`
 
 **Step 3**
 Open the `config.yml` file in a text editor and set all the required values to your needs.
 
 **Step 4**
-Open a terminal in the folder downloaded.
-
-**Step 5**
 Run the command `pip install -r requirements.txt`.
 
-**Step 6**
+**Step 5**
 Run the command `python main.py` (`python3 main.py` on Linux)
