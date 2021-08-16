@@ -21,3 +21,29 @@ Run the command `pip install -r requirements.txt`.
 
 **Step 5**
 Run the command `python main.py` (`python3 main.py` on Linux)
+
+## How to use
+To use Assist, you say the keyword which is "Assist" and wait for it to be detected, it may take a second. You will know when it is detected when you hear the sound effect. After you hear it detected you can say the command you want.
+
+## Commands
+
+**Time**
+Tells you the time!
+
+**Date**
+Gives you the current date!
+
+**Weather**
+Gets the weather in your area via GeoIP!
+
+**Repeat**
+Repeats you!
+
+**Wiki/Wikipedia/Search/Google/Search for**
+Gives you a Wikipedia snippet of whatever you would like!
+
+**Joke**
+Tells you a joke!
+
+**Exit**
+Exits the program!
